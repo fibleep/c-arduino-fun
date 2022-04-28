@@ -1,48 +1,21 @@
-
-
-#include <util/delay.h>
-#include <avr/io.h>
-
-#define NUMBER_OF_LEDS 4 //Define is a "preprocessor directive". It ensures that every NUMBER_OF_LEDS will be replaced by 4 in the following code
-
-void enableLed ( int lednumber ) //C has no classes; functions can be included directly in the .c file.
+//Use the #include lines to import the C libraries to your code
+//We'll write our own libraries as much as possible, but a number of existing libraries are indispensable.
+#include <util/delay.h> //This library includes the function named _delay_ms(..) which pauses the execution of the program.
+#include <avr/io.h> //Use this library to name the various registers of the ATmega328P microcontroller, like eg DDRB
+ 
+int main() //Start of the program
 {
-    if ( lednumber < 0 || lednumber > NUMBER_OF_LEDS-1 ) return;
-    DDRB |= ( 1 << ( PB2 + lednumber ));    //Check the tutorial "Writing to a Pin". We know from the documentation on
-                                            //the multifunctional shield that the LEDs start at PB2
-}
+    DDRB = 0b00100000; //Write a binary number to the Data Direction Register B. Pin 5 of port B is enabled for writing with this setting.
+    //DDRB |= 0b00100000; //We could also do a bitwise OR, so that we don't erase ones on other positions of DDRB
+    //DDRB |= (1 << 5); //We could also use the << bitshift operator.
+    //DDRB |= (1 << (PB2 + 3)); //Here we use the port names from io.h to make the code more readable.
 
-void lightUpLed ( int lednumber )    //Note: enabled LEDs light up immediately ( 0 = on )
-{
-    if ( lednumber < 0 || lednumber > NUMBER_OF_LEDS-1 ) return;
-    PORTB &= ~( 1 << ( PB2 + lednumber ));  //Check the tutorial on "Bit Operations" to know what happens in this line.
-}
-
-void lightDownLed ( int lednumber )
-{
-    if ( lednumber < 0 || lednumber > 3 ) return;
-    PORTB |= ( 1 << ( PB2 + lednumber ));   //Make sure you understand this line as well!
-}
-
-int main()
-{
-    for ( int i = 0; i < 4; i++ )
-    {
-        enableLed(i);
-    }
     while (1)
     {
-        for ( int i = 0; i < 4; i++ )
-        {
-            lightUpLed(i);
-            _delay_ms( 100 );
-        }
-        for ( int i = 0; i < 4; i++ )
-        {
-            lightDownLed(i);
-            _delay_ms( 100 );
-        }
+        PORTB = (0 << (PB2 + 3)); //We write a 0 to PB2+3 to let the connected LED light up.
+        _delay_ms(1000); //We use the _delay_ms(..) function from delay.h to pause the execution during 1000 milliseconds (1 sec).
+        PORTB = (1 << (PB2 + 3)); //We write a 1 to PB2+3 to let the connected LED go dark.
+        _delay_ms(1000);
     }
     return 0;
 }
-
