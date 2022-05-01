@@ -292,6 +292,12 @@ void dash()
     lightDownAllLeds();
     _delay_ms(1000);
 }
+
+/**
+ * @brief convert your string to morse! wow!
+ *
+ * @param string the sentence you want to convert!!!
+ */
 void toMorse(char string[])
 {
 

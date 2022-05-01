@@ -6,7 +6,6 @@
 
 int main()
 {
-toMorse("e e e");
-return 0;
+    toMorse("i hate c so much");
+    return 0;
 }
-

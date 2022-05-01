@@ -6,6 +6,9 @@
 #include <buttons.h>
 #include <avr/interrupt.h>
 #include <stdlib.h>
+#define true 1
+#define false 0
+#define superfalse 2
 
 int button_pushed = 0;
 ISR(PCINT1_vect)
@@ -61,17 +64,17 @@ int main()
 		playPuzzle(sequence, i);
 		_delay_ms(500);
 		button_pushed = 0;
-		int correct = 1;
+		int correct = true;
 		sei();
 		for (int j = 0; j < i; j++)
 		{
 			int next = 0;
 			button_pushed = 0;
-			while (next == 0)
+			while (next == false)
 			{
 				next = readInput(sequence[j], button_pushed);
 			}
-			if (next == 2)
+			if (next == superfalse)
 			{
 				printf("you sussy baka ");
 				correct = 0;
@@ -89,5 +92,6 @@ int main()
 			printf("next sequence! \n");
 		}
 	}
+	printf("Congratulations, you win!!! this message will probably never show up because the game goes on for way too long but since the requirement is 10 steps i can't do anything about it!!!");
 	return 0;
 }

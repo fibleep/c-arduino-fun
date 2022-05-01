@@ -4,6 +4,9 @@
 #include <avr/interrupt.h>
 #include <stdlib.h>
 #include <leds.h>
+#define true 1
+#define false 0
+#define superfalse 2
 void isB0Pressed()
 {
     initUSART();
@@ -115,16 +118,16 @@ int readInput(int toPress, int pressed)
             lightToggleOneLed(0);
             _delay_ms(100);
         }
-        return 1;
+        return true;
     }
     else if (pressed == 0)
     {
         _delay_us(10);
-        return 0;
+        return false;
     }
     else
     {
         _delay_us(10);
-        return 2; // <---- SUPER FALSE
+        return superfalse; // <---- SUPER FALSE
     }
 }
