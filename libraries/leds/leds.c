@@ -571,6 +571,7 @@ void toMorse(char string[])
             }
             break;
         }
+        printf("SIGN %d: %c\n", i + 1, string[i]);
     }
     printf("%s", string);
     for (int i = 0; i < 10; i++)

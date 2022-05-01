@@ -83,14 +83,7 @@ int buttonPushed(int button)
 }
 int buttonReleased(int button)
 {
-    if (bit_is_clear(PINC, button))
-    {
-        return 0;
-    }
-    else
-    {
-        return 1;
-    }
+    return !buttonPushed(button);
 }
 void generatePuzzle(uint8_t *sequence[], int size)
 {
