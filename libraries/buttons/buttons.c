@@ -64,10 +64,10 @@ void enableAllButtons()
 }
 int buttonPushed(int button)
 {
-    if (bit_is_clear(PINC, button))
+    if (bit_is_clear(PINC, nrToPort(button)))
     {
         _delay_us(1000);
-        if (bit_is_clear(PINC, button))
+        if (bit_is_clear(PINC, nrToPort(button)))
         {
             return 1;
         }
@@ -79,6 +79,25 @@ int buttonPushed(int button)
     else
     {
         return 0;
+    }
+}
+int anyButtonPushed()
+{
+    return buttonPushed(0) || buttonPushed(1) || buttonPushed(2);
+}
+int nrToPort(int nr)
+{
+    switch (nr)
+    {
+    case 0:
+        return PC1;
+        break;
+    case 1:
+        return PC2;
+        break;
+    case 2:
+        return PC3;
+        break;
     }
 }
 int buttonReleased(int button)

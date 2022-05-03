@@ -15,3 +15,10 @@ void makeArray(int *arr[])
         *(arr + i) = SEVENFOLD(i);
     }
 }
+void printFirstLetters(char *arr[][10])
+{
+    for (int i = 0; i < 6; i++)
+    {
+        printf("%c", *(arr[i]));
+    }
+}

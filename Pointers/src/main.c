@@ -2,6 +2,7 @@
 #include <avr/io.h>
 #include <usart.h>
 #include <pointers.h>
+#include <string.h>
 
 #define MAX 5
 #define SEVENFOLD(nr) (nr * 7)
@@ -64,6 +65,7 @@ int main()
     printArray(arr);
     makeArray(arr);
     printArray(arr);
-
+    char names[7][10] = {"Aaaa", "Bbbb", "Cccc", "Dddd", "Eeee", "Ffff", "Ggggggg"};
+    printFirstLetter(names);
     return 0;
 }
