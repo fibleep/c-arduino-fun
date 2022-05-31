@@ -22,3 +22,6 @@ void writeNumberAndWait(int number, int delay);
 void writeCharToSegment(uint8_t segment, char character);
 void writeString(char str[]);
 void writeStringAndWait(char str[], int delay);
+
+void writeLine(char line[]);
+void resetDisplay();

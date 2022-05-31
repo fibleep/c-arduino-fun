@@ -1,5 +1,5 @@
 #include "display.h"
-
+#include <buttons.h>
 #include <avr/io.h>
 #include <util/delay.h>
 #include <ctype.h>
@@ -98,9 +98,8 @@ void writeCharToSegment(uint8_t segment, char character)
   character = toupper(character);
   if (!isalpha(character))
   {
-    character = SPACE;
     cbi(PORTD, LATCH_DIO);
-    shift(character, MSBFIRST);
+    shift(SPACE, MSBFIRST);
     shift(SEGMENT_SELECT[segment], MSBFIRST);
     sbi(PORTD, LATCH_DIO);
   }
@@ -112,6 +111,7 @@ void writeCharToSegment(uint8_t segment, char character)
     sbi(PORTD, LATCH_DIO);
   }
 }
+
 void writeString(char str[])
 {
   for (int i = 0; i < 4; i++)
@@ -119,10 +119,48 @@ void writeString(char str[])
     writeCharToSegment(i, str[i]);
   }
 }
+
 void writeStringAndWait(char str[], int delay)
 {
   for (int i = 0; i < delay; i++)
   {
     writeString(str);
   }
+}
+
+void resetDisplay(){
+  for(int i=0;i<4;i++){
+    writeCharToSegment(i,SPACE);
+  }
+}
+
+void writeLine(char line[]){
+  int bound = strlen(line);
+  int current_bound=0;
+  int scroll_speed = 5000;
+
+  for(int i=0;i<bound;i++){
+    for(int ii=0;ii<scroll_speed;ii++){
+      int segment=0;
+
+      if(anyButtonPushed()){
+        ii+=50;
+      }
+
+        for(int j=current_bound;j<current_bound+4;j++){
+          if(j>bound){
+            writeCharToSegment(segment,SPACE);
+          }
+          else if((line[j]>='0' && line[j]<='9')){
+            writeNumberToSegment(segment,line[j]-'0');
+          }
+          else{
+            writeCharToSegment(segment,line[j]);
+          }
+          segment++;
+        }
+        resetDisplay();
+    }
+    current_bound=current_bound+1;
+    }
 }
