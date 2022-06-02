@@ -1,5 +1,6 @@
 #include <avr/interrupt.h>
 #include <avr/io.h>
+#include <display.h>
 
 
 #define MULTIPLE 250

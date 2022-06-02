@@ -1,9 +1,12 @@
-#include "display.h"
+#include <display.h>
 #include <buttons.h>
 #include <avr/io.h>
 #include <util/delay.h>
 #include <ctype.h>
+#include <string.h>
 #define SPACE 0xFF
+
+
 /* Segment byte maps for numbers 0 to 9 */
 const uint8_t SEGMENT_MAP[] = {0xC0, 0xF9, 0xA4, 0xB0, 0x99,
                                0x92, 0x82, 0xF8, 0X80, 0X90};
@@ -54,7 +57,7 @@ void shift(uint8_t val, uint8_t bitorder)
   }
 }
 
-// Writes a digit to a certain segment. Segment 0 is the leftmost.
+// Writes a digit to a certain segment-> Segment 0 is the leftmost->
 void writeNumberToSegment(uint8_t segment, uint8_t value)
 {
   cbi(PORTD, LATCH_DIO);
@@ -63,7 +66,7 @@ void writeNumberToSegment(uint8_t segment, uint8_t value)
   sbi(PORTD, LATCH_DIO);
 }
 
-// Writes a nuber between 0 and 9999 to the display. To be used in a loop...
+// Writes a nuber between 0 and 9999 to the display-> To be used in a loop->
 void writeNumber(int number)
 {
   if (number < 0 || number > 9999)
@@ -74,8 +77,51 @@ void writeNumber(int number)
   writeNumberToSegment(3, number % 10);
 }
 
-// Writes a number between 0 and 9999 to the display and makes sure that it stays there a certain number of millisecs.
-// Note: the timing is approximate; the amount of time writeNumberToSegment takes is not accounted for...
+void addDecimal(int segment){
+  cbi(PORTD, LATCH_DIO);
+  shift(0b01111111, MSBFIRST);
+  shift(0xF2, MSBFIRST);
+  sbi(PORTD, LATCH_DIO);
+}
+
+
+void writeTimer(int* number)
+{
+  if (*number < 0 || *number > 9999)
+    return;
+    TIMER* timer;
+    addTimer(timer,*number);
+
+  writeNumberToSegment(0, timer->minutes_tens);
+  writeNumberToSegment(1,timer->minutes);
+  addDecimal(1);
+  writeNumberToSegment(2, timer->seconds_tens);
+  writeNumberToSegment(3, timer->seconds);
+}
+
+void addTimer(TIMER* timer,int* number){
+  if(*number==60){
+    if(timer->minutes==9){
+      timer->minutes_tens++;
+      timer->minutes=0;
+    }else{
+      (timer->minutes)++;
+    }
+    *number=0;
+  }else{
+    timer->seconds_tens=(*number / 10) % 10;
+    timer->seconds=*number%10;
+  }
+  printf("TIMER NUMBER: %d",number);
+  printf("%d %d MINUTES %d %d SECONDS \n",timer->minutes_tens,timer->minutes,timer->seconds_tens,timer->seconds);
+
+
+
+}
+
+
+// Writes a number between 0 and 9999 to the display and makes sure that it stays there a certain number of millisecs->
+// Note: the timing is approximate; the amount of time writeNumberToSegment takes is not accounted for->
 void writeNumberAndWait(int number, int delay)
 {
   if (number < 0 || number > 9999)

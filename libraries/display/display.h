@@ -14,6 +14,14 @@
 #define sbi(register, bit) (register |= _BV(bit))
 #define cbi(register, bit) (register &= ~_BV(bit))
 
+typedef struct{
+uint8_t minutes;
+uint8_t minutes_tens;
+uint8_t seconds;
+uint8_t seconds_tens;
+} TIMER;
+
+
 void initDisplay();
 void writeNumberToSegment(uint8_t segment, uint8_t value);
 void writeNumber(int number);
@@ -25,3 +33,7 @@ void writeStringAndWait(char str[], int delay);
 
 void writeLine(char line[]);
 void resetDisplay();
+
+void writeTimer(int* number);
+void addTimer(TIMER* timer,int* number);
+void addDecimal(int segment);
