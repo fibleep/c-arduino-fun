@@ -6,5 +6,6 @@ void enableAllButtons();
 void generatePuzzle(uint8_t[], int);
 void printPuzzle(uint8_t[], int);
 int readInput(uint8_t, int);
-int nrToPort(int);
 int anyButtonPushed();
+int buttonPressed(int button);
+int buttonClicked(int button);

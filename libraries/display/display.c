@@ -4,7 +4,10 @@
 #include <util/delay.h>
 #include <ctype.h>
 #include <string.h>
+#include <stdlib.h>
 #define SPACE 0xFF
+
+int timer_initialized=0;
 
 
 /* Segment byte maps for numbers 0 to 9 */
@@ -87,19 +90,31 @@ void addDecimal(int segment){
 
 void writeTimer(int* number)
 {
-  if (*number < 0 || *number > 9999)
-    return;
-    TIMER* timer;
-    addTimer(timer,*number);
+  if (number < 0 || number > 9999)
+  return;
+  TIMER *timer_ptr,timer;
+  timer_ptr=&timer;
+  addTimer(timer_ptr,number);
 
-  writeNumberToSegment(0, timer->minutes_tens);
-  writeNumberToSegment(1,timer->minutes);
+  writeNumberToSegment(0, timer.minutes_tens);
+  writeNumberToSegment(1,timer.minutes);
   addDecimal(1);
-  writeNumberToSegment(2, timer->seconds_tens);
-  writeNumberToSegment(3, timer->seconds);
+  writeNumberToSegment(2, timer.seconds_tens);
+  writeNumberToSegment(3, timer.seconds);
 }
 
 void addTimer(TIMER* timer,int* number){
+  if(!timer_initialized){
+    timer->minutes=(uint8_t*)malloc(sizeof(uint8_t));
+    timer->minutes_tens=(uint8_t*)malloc(sizeof(uint8_t));
+    timer->seconds=(uint8_t*)malloc(sizeof(uint8_t));
+    timer->seconds_tens=(uint8_t*)malloc(sizeof(uint8_t));
+    timer->minutes=0;
+    timer->minutes_tens=0;
+
+    timer_initialized=1;
+  }
+
   if(*number==60){
     if(timer->minutes==9){
       timer->minutes_tens++;
@@ -112,11 +127,6 @@ void addTimer(TIMER* timer,int* number){
     timer->seconds_tens=(*number / 10) % 10;
     timer->seconds=*number%10;
   }
-  printf("TIMER NUMBER: %d",number);
-  printf("%d %d MINUTES %d %d SECONDS \n",timer->minutes_tens,timer->minutes,timer->seconds_tens,timer->seconds);
-
-
-
 }
 
 
@@ -183,17 +193,18 @@ void resetDisplay(){
 void writeLine(char line[]){
   int bound = strlen(line);
   int current_bound=0;
-  int scroll_speed = 5000;
+  int scroll_speed = 1000;
 
   for(int i=0;i<bound;i++){
     for(int ii=0;ii<scroll_speed;ii++){
       int segment=0;
-
-      if(anyButtonPushed()){
-        ii+=50;
-      }
-
         for(int j=current_bound;j<current_bound+4;j++){
+          
+          if(anyButtonPushed()){
+              i=ii=j=1000;
+              break;
+            }
+          
           if(j>bound){
             writeCharToSegment(segment,SPACE);
           }
