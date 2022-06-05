@@ -92,7 +92,7 @@ int buttonPressed(int button){
 }
 int buttonClicked(button){
     if(buttonPushed(button)){
-        if(buttonClicked(button)){
+        if(buttonReleased(button)){
             return 1;
         }
     }

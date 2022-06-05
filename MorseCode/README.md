@@ -1,7 +1,10 @@
 ### MORSE CODE
 ## made by Filip Nowak
 
-the code uses toMorse() function from leds library
+LIBRARIES USED:
+
+leds.h --> toMorse() 
+
 the user passes a string and the function converts it to morse code.
 
 firstly it counts down, and then with intervals of:
@@ -12,6 +15,5 @@ firstly it counts down, and then with intervals of:
 -- the space between different letters is three seconds
 -- the space between different words is seven seconds
 
-i decided to use switch case and i regret it very much
-
 there's a for loop which iterates through the string and depending on the letter, it flashes with different patterns of dots and dashes.
+

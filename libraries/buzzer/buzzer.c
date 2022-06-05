@@ -2,6 +2,7 @@
 #include <util/delay.h>
 #include <ctype.h>
 #include <avr/io.h>
+#include <display.h>
 
 
 void enableBuzzer()
@@ -9,7 +10,7 @@ void enableBuzzer()
     DDRD |= ( 1 << PD3 );   //Buzzer is connected to PD3
 }
 
-void playTone( float frequency, uint32_t duration )
+void playTone( float frequency, uint32_t duration)
 {
     uint32_t periodInMicro = ( uint32_t ) ( 1000000 / frequency );  //Calculate the period in microsecs from the freq
     uint32_t durationInMicro = duration * 1000; //We express duration in microsecs
@@ -20,5 +21,4 @@ void playTone( float frequency, uint32_t duration )
         PORTD |= ( 1 << PD3 );          //Turn the buzzer off
         _delay_us( periodInMicro / 2 ); //Wait again for half of the period
     }
-    printf("CURRENT NOTE FREQUENCY: %d   DURATION: %d\n",frequency,duration);
 }

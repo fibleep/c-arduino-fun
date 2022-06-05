@@ -37,3 +37,4 @@ void resetDisplay();
 void writeTimer(int* number);
 void addTimer(TIMER* timer,int* number);
 void addDecimal(int segment);
+void printTimer(int* number);

@@ -43,12 +43,12 @@ int main()
     writeNumberToSegment(2, matches / 10);
     writeNumberToSegment(3, matches % 10);
 
-    if (buttonPushed(0) && toTake - 1 > 0)
+    if (buttonPushed(1) && toTake - 1 > 0)
     {
       toTake--;
       _delay_ms(500);
     }
-    else if (buttonPushed(1))
+    else if (buttonPushed(2))
     {
       *(taken + turnCount) = toTake;
       *(stack + turnCount) = matches;
@@ -79,7 +79,7 @@ int main()
       _delay_ms(250);
       while (1)
       {
-        if (!buttonPushed(1))
+        if (!buttonPushed(2))
         {
           writeCharToSegment(1, *(player + currTurn));
           _delay_ms(100);
@@ -109,12 +109,14 @@ int main()
       }
       _delay_ms(500);
     }
-    else if (buttonPushed(2) && toTake + 1 < 4)
+    else if (buttonPushed(3) && toTake + 1 < 4)
     {
       printf("2");
       toTake++;
       _delay_ms(500);
     }
   }
+  free(taken);
+  free(stack);
   return 0;
 }

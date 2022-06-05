@@ -129,6 +129,15 @@ void addTimer(TIMER* timer,int* number){
   }
 }
 
+void printTimer(int* number){
+  if (number < 0 || number > 9999)
+  return;
+  TIMER *timer_ptr,timer;
+  timer_ptr=&timer;
+  addTimer(timer_ptr,number);
+  printf("%d%d : %d%d\n",timer.minutes_tens,timer.minutes,timer.seconds_tens,timer.seconds);
+}
+
 
 // Writes a number between 0 and 9999 to the display and makes sure that it stays there a certain number of millisecs->
 // Note: the timing is approximate; the amount of time writeNumberToSegment takes is not accounted for->

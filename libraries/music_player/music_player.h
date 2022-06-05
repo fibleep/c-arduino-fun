@@ -21,5 +21,7 @@ typedef struct{
 
 void initializeSongList();
 SONG addSong(int index);
-void playSong(int index);
+int playSong(int index,int* timer);
 void getSong(int index);
+void pauseSong();
+int songPaused();
